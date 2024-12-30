@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surpresa para Leticya</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #message {
+            font-size: 24px;
+            display: none;
+            white-space: pre-wrap; /* Mantém a formatação */
+            text-align: center;
+            margin-bottom: 20px; /* Espaço para os botões */
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: float 3s ease-in forwards;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+        .button {
+            display: none;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 24px; /* Aumenta o tamanho da fonte dos botões */
+        }
+        .button.no {
+            position: relative;
+            transition: 0.5s;
+        }
+        .flower {
+            position: absolute;
+            color: pink;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="message"></div>
+    <div style="display: flex; justify-content: center;">
+        <div class="button yes" onclick="goToYes()">sim</div>
+        <div class="button no" onclick="noClicked()">não</div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        let messageShown = false; // Para evitar repetição de mensagens
+
+        // Adiciona corações flutuantes
+        setInterval(createFloatingHeart, 1000); // Corações a cada segundo
+
+        document.addEventListener('click', function(event) {
+            clickCount++;
+            if (clickCount === 1) {
+                explodeFireworks(event.clientX, event.clientY);
+            } else if (clickCount === 3 && !messageShown) {
+                showMessage("Olá Leticya Emmanuely,\n aqui é a Rebecca sua namorada.\n Gostaria de informar que quero terminar nosso namoro.", 0);
+                messageShown = true; // Marca a mensagem como mostrada
+            } else if (clickCount === 4 && messageShown) {
+                showMessage("Quer casar comigo?", 1);
+            }
+        });
+
+        function explodeFireworks(x, y) {
+            for (let i = 0; i < 30; i++) { // Personalize a quantidade de fogos
+                createFirework(x, y);
+            }
+        }
+
+        function createFirework(x, y) {
+            const firework = document.createElement('div');
+            firework.className = 'heart';
+            firework.style.left = `${x}px`;
+            firework.style.top = `${y}px`;
+            firework.style.width = '10px'; // Personalize o tamanho
+            firework.style.height = '10px'; // Personalize o tamanho
+            firework.style.borderRadius = '50%'; // Forma circular
+            firework.style.backgroundColor = 'red'; // Cor do fogo
+            document.body.appendChild(firework);
+            setTimeout(() => {
+                firework.remove();
+            }, 3000); // Remove o fogo após 3 segundos
+        }
+
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.width = '10px'; // Personalize o tamanho
+            heart.style.height = '10px'; // Personalize o tamanho
+            heart.style.borderRadius = '50%'; // Forma circular
+            heart.style.backgroundColor = 'red'; // Cor do coração
+            heart.style.left = `${Math.random() * window.innerWidth}px`;
+            heart.style.bottom = '0px'; // Começa na parte inferior
+            document.body.appendChild(heart);
+            heart.style.animation = 'float 3s ease-in forwards'; // Animação de flutuação
+            setTimeout(() => {
+                heart.remove();
+            }, 3000); // Remove coração após 3 segundos
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.innerHTML = '';
+            let index = 0;
+
+            const interval = setInterval(() => {
+                if (index < message.length) {
+                    messageDiv.innerHTML += message[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    if (type === 1) {
+                        showButtons();
+                    }
+                }
+            }, 200); // Velocidade do texto
+        }
+
+        function showButtons() {
+            document.querySelector('.button.yes').style.display = 'inline-block';
+            document.querySelector('.button.no').style.display = 'inline-block';
+        }
+
+        function noClicked() {
+            const noButton = document.querySelector('.button.no');
+            noButton.style.left = `${Math.random() * window.innerWidth}px`;
+            noButton.style.top = `${Math.random() * window.innerHeight}px`;
+        
+        }
+
+        function goToYes() {
+            window.location.href = "https://youtu.be/izGwDsrQ1eQ?si=l_Gzk2_hmXm2ykCz"; // Link para música romântica
+        }
+
+        // Função para desenhar flores na parte inferior da tela
+        function drawFlowers() {
+            const flowerCount = Math.floor(window.innerWidth / 20); // Adapte o número de flores
+            let i = 0;
+            const flowerInterval = setInterval(() => {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.textContent = '🌸'; // Flor como símbolo
+                flower.style.left = `${i * 50}px`;
+                flower.style.bottom = '0px';
+                document.body.appendChild(flower);
+                i++;
+                if (i >= flowerCount) {
+                    clearInterval(flowerInterval); // Para após desenhar todas as flores
+                }
+            }, 100); // Velocidade de desenho das flores
+        }
+
+        drawFlowers(); // Chama a função para desenhar flores
+    </script>
+</body>
+</html>
